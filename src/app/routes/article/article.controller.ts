@@ -5,12 +5,10 @@ import {
   createArticle,
   deleteArticle,
   deleteComment,
-  favoriteArticle,
   getArticle,
   getArticles,
   getCommentsByArticle,
   getFeed,
-  unfavoriteArticle,
   updateArticle,
 } from './article.service';
 
@@ -194,46 +192,6 @@ router.delete(
     try {
       await deleteComment(Number(req.params.id), req.auth?.user?.id);
       res.status(200).json({});
-    } catch (error) {
-      next(error);
-    }
-  },
-);
-
-/**
- * Favorite article
- * @auth required
- * @route {POST} /articles/:slug/favorite
- * @param slug slug of the article (based on the title)
- * @returns article favorited article
- */
-router.post(
-  '/articles/:slug/favorite',
-  auth.required,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const article = await favoriteArticle(req.params.slug, req.auth?.user?.id);
-      res.json({ article });
-    } catch (error) {
-      next(error);
-    }
-  },
-);
-
-/**
- * Unfavorite article
- * @auth required
- * @route {DELETE} /articles/:slug/favorite
- * @param slug slug of the article (based on the title)
- * @returns article unfavorited article
- */
-router.delete(
-  '/articles/:slug/favorite',
-  auth.required,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const article = await unfavoriteArticle(req.params.slug, req.auth?.user?.id);
-      res.json({ article });
     } catch (error) {
       next(error);
     }
